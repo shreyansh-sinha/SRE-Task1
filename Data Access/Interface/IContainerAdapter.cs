@@ -4,6 +4,8 @@ namespace StudentAPI.Interface
 {
     public interface IContainerAdapter
     {
+        CosmosClient GetCosmosClient();
+
         /// <summary>
         /// Create database if not exists already
         /// </summary>

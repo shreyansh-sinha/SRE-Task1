@@ -1,4 +1,6 @@
 ﻿using StudentAPI.Adapter;
+using StudentAPI.Data_Access.Interface;
+using StudentAPI.Data_Access.Wrapper;
 using StudentAPI.Interface;
 using StudentAPI.Model;
 using StudentAPI.Repository;
@@ -17,7 +19,8 @@ namespace StudentAPI.Extension
         {
             services.AddSingleton(dbConfiguration);
             services.AddTransient<IContainerAdapter, ContainerAdapter>();
-            using(ServiceProvider serviceProvider = services.BuildServiceProvider())
+            services.AddTransient<ILinqWrapper, LinqWrapper>();
+            using (ServiceProvider serviceProvider = services.BuildServiceProvider())
             {
                 IContainerAdapter containerAdapter = serviceProvider.GetService<IContainerAdapter>();
                 
@@ -28,7 +31,7 @@ namespace StudentAPI.Extension
                     await containerAdapter.CreateContainerIfNotExistsAsync(container.containerId, container.partitionKeyPath).ConfigureAwait(false);
                 }
             }
-            services.AddTransient<IContainerRepository<Student>, ContainerRepository>(provider => new ContainerRepository(provider.GetRequiredService<IContainerAdapter>(), Container.Students.containerId));
+            services.AddTransient<IContainerRepository<Student>, ContainerRepository>(provider => new ContainerRepository(provider.GetRequiredService<IContainerAdapter>(), provider.GetRequiredService<ILinqWrapper>(), Container.Students.containerId));
         }
     }
 }

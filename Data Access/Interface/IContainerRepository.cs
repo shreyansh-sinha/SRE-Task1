@@ -1,4 +1,7 @@
-﻿namespace StudentAPI.Interface
+﻿using StudentAPI.Model;
+using System.Linq.Expressions;
+
+namespace StudentAPI.Interface
 {
     public interface IContainerRepository<T> where T : class
     {
@@ -14,7 +17,7 @@
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns>A Task.</returns>
-        Task UpdateAsync(T entity);
+        Task<Student> UpdateAsync(T entity);
 
         /// <summary>
         /// Delete async.
@@ -30,6 +33,8 @@
         /// <param name="id">Id value</param>
         /// <param name="partitionKey">Partition key value</param>
         /// <returns></returns>
-        Task<T> GetItemAsync(string id, string partitionKey);
+        Task<Student> GetItemAsync(string id, string partitionKey);
+
+        Task<IEnumerable<Student>> FilterAsync(Expression<Func<Student, bool>> filter);
     }
 }

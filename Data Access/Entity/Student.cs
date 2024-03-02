@@ -20,6 +20,8 @@ namespace StudentAPI.Model
         
         public string Standard {  get; set; }
 
+        public string Department { get; set; }
+
         public string Father { get; set; }
 
         public string Mother {  get; set; }

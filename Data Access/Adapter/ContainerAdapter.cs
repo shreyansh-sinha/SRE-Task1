@@ -36,7 +36,14 @@ namespace StudentAPI.Adapter
         /// <returns></returns>
         public async Task CreateContainerIfNotExistsAsync(string containerId, string partitionKeyPath)
         {
-            await _client.GetDatabase(_databaseId).CreateContainerIfNotExistsAsync(containerId, partitionKeyPath).ConfigureAwait(false);
+            try
+            {
+                await _client.GetDatabase(_databaseId).CreateContainerIfNotExistsAsync(containerId, partitionKeyPath).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         /// <summary>
@@ -63,5 +70,10 @@ namespace StudentAPI.Adapter
         /// <returns></returns>
         public Container GetContainer(string containerId) =>
             _client.GetContainer(_databaseId, containerId);
+
+        public CosmosClient GetCosmosClient()
+        {
+            return _client;
+        }
     }
 }
